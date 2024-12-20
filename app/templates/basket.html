@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎪Мои билетики🎪</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .scrollable-container {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .divider {
+            height: 5px;
+            background-color: black;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-type" href="/home">🎡ПАРК АТТРАКЦИОНОВ🎡</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="ml-auto">
+                <form action="/logout" method="POST" class="form-inline">
+                    <button type="submit" class="btn btn-outline-danger my-2 my-sm-0">Уйти из парка</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="divider"></div>
+    <div class="container mt-5">
+        <h2 class="mt-4">🎪Мои билетики🎪</h2>
+        {% if basket %}
+        <div class="scrollable-container border">
+            <table class="table table-bordered mb-0">
+                <thead>
+                    <tr>
+                        <th>Билет</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in basket %}
+                    <tr id="row-{{ product[1] }}">
+                        <td>{{ product[2] }} {{ product[4] }}</td>
+                        <td>{{ product[6] }}</td>
+                        <td>{{ product[5] }} руб.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <h3 class="mt-4">Итого: {{ total }} руб.</h3>
+        {% else %}
+        У вас нет билетов
+        {% endif %}
+        {% if basket_id %}
+        <form class="mb-4 make_order_Form">
+            <div class="form-group">
+                <input type="hidden" name="basket_id" id="basket_id" value="{{ basket_id }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Купить билетики</button>
+        </form>
+        <div id="make_order_messageContainer"></div>
+        {% endif %}
+    </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).on('submit', '.make_order_Form', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/basket/make_order',
+                data: $(this).serialize(),
+                success: function(response) {
+                    location.reload();
+                },
+                error: function() {
+                    $('#make_order_messageContainer').html('<div class="alert alert-danger mt-3" role="alert">Error occurred while making order.</div>');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

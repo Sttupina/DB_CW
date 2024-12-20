@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аттракционы</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 5px solid #8B0000;
+            border-radius: 0px; 
+        }
+        .card:hover {
+            background-color: #800000; 
+        }
+        .divider {
+            height: 2px;
+            background-color: #8B0000;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-type" href="/home">🎡ПАРК АТТРАКЦИОНОВ🎡</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="ml-auto d-flex">
+                <form action="/basket" method="GET" class="form-inline">
+                    <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">🎪Мои билетики🎪</button>
+                </form>
+                <form action="/logout" method="POST" class="form-inline ml-2"> 
+                    <button type="submit" class="btn btn-outline-danger my-2 my-sm-0">Уйти из парка</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <div class="divider"></div>
+    <div class="container mt-5">
+        <h2>🎠ТаКиЕ аТтРаКцИоНы ЕсТь🎠</h2>
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-md-6">
+                <div class="card mb-4" onclick="window.location='/products/{{ product[0] }}&{{ product[6] }}'">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product[1] }} {{ product[2] }}</h5>
+                        <p class="card-text">Цена: {{ product[4] }} руб.</p>
+                        <p class="card-text">Адрес: {{ product[7] }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
